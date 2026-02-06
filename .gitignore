@@ -1,0 +1,32 @@
+# Binaries and Object Files
+*.exe
+*.o
+*.a
+*.dll
+*.so
+gui/visualizer
+dashboard/dashboard
+satellite/satellite
+
+# Python
+processor/venv/
+processor/__pycache__/
+*.pyc
+
+# Docker Volumes (if mapped locally)
+postgres_data/
+minio_data/
+redpanda_data/
+
+# Data Buffers (Keep the directories, ignore content)
+downlink_buffer/*
+!downlink_buffer/.gitkeep
+local_sync/*
+!local_sync/.gitkeep
+
+# Raylib Source (Downloaded during build)
+gui/raylib_src/
+
+# IDEs
+.vscode/
+.idea/

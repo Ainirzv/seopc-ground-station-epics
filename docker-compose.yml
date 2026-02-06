@@ -1,0 +1,54 @@
+services:
+  redpanda:
+    image: docker.redpanda.com/redpandadata/redpanda:latest
+    container_name: redpanda
+    command:
+      - redpanda
+      - start
+      - --smp
+      - '1'
+      - --memory
+      - 256M
+      - --overprovisioned
+      - --kafka-addr
+      - internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr
+      - internal://redpanda:9092,external://localhost:19092
+    ports:
+      - "19092:19092"
+      - "9092:9092"
+    mem_limit: 512m
+    volumes:
+      - redpanda_data:/var/lib/redpanda/data
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: password123
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    mem_limit: 512m
+    volumes:
+      - minio_data:/data
+
+  postgis:
+    image: postgis/postgis:15-3.3-alpine
+    container_name: postgis
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: seopc_metadata
+    ports:
+      - "5432:5432"
+    mem_limit: 512m
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  redpanda_data:
+  minio_data:
+  postgres_data:
